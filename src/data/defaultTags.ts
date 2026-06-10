@@ -4,6 +4,7 @@ export const defaultSeasons: Season[] = [
   { id: 'season-1', name: 'StarDust Version 1', description: 'Mùa sưu tầm đầu tiên tại Việt Nam (May 2026)' },
   // Season 2 tạm ẩn — chưa có hình ảnh thẻ. Bỏ comment dòng dưới khi có ảnh:
   // { id: 'season-2', name: 'StarDust Version 2', description: 'Mùa sưu tầm thứ hai với các Pokémon Dynamax & Z-Moves' },
+  { id: 'special-cards', name: 'Thẻ Special', description: 'Các thẻ Special đặc biệt — Pikachu, Lucario, Snorlax' },
   { id: 'special', name: 'Thẻ Đặc Biệt (Event & Promo)', description: 'Nơi lưu trữ các thẻ bài Promo, Event hoặc Custom tự chế của bạn' }
 ];
 
@@ -18,7 +19,7 @@ const season1NamesAndTypes: [string, string][] = [
   ['Venusaur', 'Grass'],     // 1-1-008
   ['Charizard', 'Fire'],     // 1-1-009
   ['Blastoise', 'Water'],    // 1-1-010
-  
+
   // Star Tags
   ['Vaporeon', 'Water'],     // 1-1-011
   ['Flareon', 'Fire'],       // 1-1-012
@@ -35,7 +36,7 @@ const season1NamesAndTypes: [string, string][] = [
   ['Inteleon', 'Water'],     // 1-1-023
   ['Obstagoon', 'Dark'],     // 1-1-024
   ['Keldeo', 'Water'],       // 1-1-025
-  
+
   // Normal Tags (★2-4)
   ['Sprigatito', 'Grass'],   // 1-1-026
   ['Floragato', 'Grass'],    // 1-1-027
@@ -88,14 +89,14 @@ const season1NamesAndTypes: [string, string][] = [
 export const defaultTags: MezastarTag[] = season1NamesAndTypes.map(([name, type], index) => {
   const cardNumber = index + 1;
   const no = `1-1-${String(cardNumber).padStart(3, '0')}`;
-  
+
   let rarity: MezastarTag['rarity'] = 'normal';
   if (cardNumber <= 10) {
     rarity = 'superstar';
   } else if (cardNumber <= 25) {
     rarity = 'star';
   }
-  
+
   return {
     id: `season-1-${no}`,
     no,
@@ -241,10 +242,42 @@ const season2RegularTags: MezastarTag[] = [
   },
 ];
 
-defaultTags.push(...season2Superstar, ...season2Star, ...season2Normal, ...season2RegularTags);
+// ===== Special Cards =====
+// Thẻ Special chưa có hình ảnh — sẽ cập nhật sau
+const specialCards: MezastarTag[] = [
+  {
+    id: 'special-pikachu',
+    no: 'SP-001',
+    name: 'Pikachu',
+    rarity: 'promo',
+    type: 'Electric',
+    seasonId: 'special-cards',
+    notes: 'Thẻ Special Pikachu — chưa có hình ảnh',
+  },
+  {
+    id: 'special-lucario',
+    no: 'SP-002',
+    name: 'Lucario',
+    rarity: 'promo',
+    type: 'Fighting',
+    seasonId: 'special-cards',
+    notes: 'Thẻ Special Lucario — chưa có hình ảnh',
+  },
+  {
+    id: 'special-snorlax',
+    no: 'SP-003',
+    name: 'Snorlax',
+    rarity: 'promo',
+    type: 'Normal',
+    seasonId: 'special-cards',
+    notes: 'Thẻ Special Snorlax — chưa có hình ảnh',
+  },
+];
+
+defaultTags.push(...season2Superstar, ...season2Star, ...season2Normal, ...season2RegularTags, ...specialCards);
 
 export const POKEMON_TYPES = [
-  'Normal', 'Fire', 'Water', 'Grass', 'Electric', 'Ice', 
-  'Fighting', 'Poison', 'Ground', 'Flying', 'Psychic', 'Bug', 
+  'Normal', 'Fire', 'Water', 'Grass', 'Electric', 'Ice',
+  'Fighting', 'Poison', 'Ground', 'Flying', 'Psychic', 'Bug',
   'Rock', 'Ghost', 'Dragon', 'Steel', 'Fairy', 'Dark'
 ];

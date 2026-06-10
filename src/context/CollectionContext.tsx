@@ -38,10 +38,8 @@ const CollectionContext = createContext<CollectionContextValue | null>(null);
 
 export function CollectionProvider({ children }: { children: ReactNode }) {
   // --- Core State ---
-  const [seasons, setSeasons] = useState<Season[]>(() => {
-    const saved = localStorage.getItem('mezastar_seasons');
-    return saved ? JSON.parse(saved) : defaultSeasons;
-  });
+  // Seasons luôn cứng từ defaultSeasons, không lưu vào localStorage
+  const [seasons, setSeasons] = useState<Season[]>(defaultSeasons);
 
   const [tags, setTags] = useState<MezastarTag[]>(() => {
     const saved = localStorage.getItem('mezastar_tags');
@@ -54,10 +52,6 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
   });
 
   // --- LocalStorage Sync ---
-  useEffect(() => {
-    localStorage.setItem('mezastar_seasons', JSON.stringify(seasons));
-  }, [seasons]);
-
   useEffect(() => {
     localStorage.setItem('mezastar_tags', JSON.stringify(tags));
   }, [tags]);
