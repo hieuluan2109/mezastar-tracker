@@ -10,7 +10,6 @@ import { Sparkles, Trophy, RotateCcw } from 'lucide-react';
 
 const TagDetailModal = lazy(() => import('./components/TagDetailModal').then(m => ({ default: m.TagDetailModal })));
 const AddTagModal = lazy(() => import('./components/AddTagModal').then(m => ({ default: m.AddTagModal })));
-const AddSeasonModal = lazy(() => import('./components/AddSeasonModal').then(m => ({ default: m.AddSeasonModal })));
 
 function ModalFallback() {
   return (
@@ -35,7 +34,7 @@ function App() {
   // Modal open states (local — not drilled deeply)
   const [selectedTag, setSelectedTag] = useState<MezastarTag | null>(null);
   const [isAddTagOpen, setIsAddTagOpen] = useState(false);
-  const [isAddSeasonOpen, setIsAddSeasonOpen] = useState(false);
+  // isAddSeasonOpen removed — seasons are added via defaultTags.ts data file
 
   // --- Stats ---
   const totalTagsInSelectedSeason = useMemo(
@@ -136,7 +135,6 @@ function App() {
         {/* Filters and Search toolbar */}
         <FilterBar
           onAddTag={() => setIsAddTagOpen(true)}
-          onAddSeason={() => setIsAddSeasonOpen(true)}
         />
 
         {/* Tags Dex Grid with entrance animations */}
@@ -206,11 +204,6 @@ function App() {
         </Suspense>
       )}
 
-      {isAddSeasonOpen && (
-        <Suspense fallback={<ModalFallback />}>
-          <AddSeasonModal onClose={() => setIsAddSeasonOpen(false)} />
-        </Suspense>
-      )}
     </div>
   );
 }

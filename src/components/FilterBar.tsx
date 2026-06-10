@@ -7,12 +7,10 @@ import { useFilters } from '../context/FilterContext';
 
 interface FilterBarProps {
   onAddTag: () => void;
-  onAddSeason: () => void;
 }
 
 export const FilterBar: React.FC<FilterBarProps> = ({
   onAddTag,
-  onAddSeason,
 }) => {
   const { seasons } = useCollection();
   const { filters, setFilters } = useFilters();
@@ -71,14 +69,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             );
           })}
         </div>
-
-        <button
-          onClick={onAddSeason}
-          className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-panel border border-primary text-secondary transition-colors hover:bg-elevated hover:text-primary focus-ring-muted"
-        >
-          <Plus className="h-3.5 w-3.5" aria-hidden="true" />
-          <span>Thêm mùa mới</span>
-        </button>
       </div>
 
       {/* 2. Main Filters Section */}
