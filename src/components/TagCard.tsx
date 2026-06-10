@@ -1,22 +1,36 @@
 import React from 'react';
 import type { MezastarTag } from '../types';
 import { Plus, Minus, MessageSquare, Flame } from 'lucide-react';
+import { useCollection } from '../context/CollectionContext';
 
 interface TagCardProps {
   tag: MezastarTag;
   quantity: number;
   hasNotes: boolean;
-  onQuantityChange: (tagId: string, delta: number) => void;
   onCardClick: () => void;
 }
 
-export const TagCard: React.FC<TagCardProps> = ({
+function tagCardPropsEqual(prev: TagCardProps, next: TagCardProps) {
+  return (
+    prev.tag.id === next.tag.id &&
+    prev.quantity === next.quantity &&
+    prev.hasNotes === next.hasNotes &&
+    prev.tag.name === next.tag.name &&
+    prev.tag.no === next.tag.no &&
+    prev.tag.rarity === next.tag.rarity &&
+    prev.tag.type === next.tag.type &&
+    prev.tag.seasonId === next.tag.seasonId &&
+    prev.tag.isCustom === next.tag.isCustom
+  );
+}
+
+export const TagCard: React.FC<TagCardProps> = React.memo(({
   tag,
   quantity,
   hasNotes,
-  onQuantityChange,
   onCardClick,
 }) => {
+  const { handleQuantityChange } = useCollection();
   const isOwned = quantity > 0;
 
   // Decide border gradient and shadow glows depending on rarity
@@ -84,10 +98,10 @@ export const TagCard: React.FC<TagCardProps> = ({
   };
 
   return (
-    <div 
+    <div
       className={`group relative flex flex-col rounded-2xl p-4 cursor-pointer transition-all duration-300 select-none ${cardClass} ${glowClass} ${
-        isOwned 
-          ? 'opacity-100 scale-100 hover:scale-[1.02]' 
+        isOwned
+          ? 'opacity-100 scale-100 hover:scale-[1.02]'
           : 'opacity-55 grayscale-[30%] hover:opacity-100 hover:scale-[1.02] hover:grayscale-0'
       }`}
       onClick={onCardClick}
@@ -109,19 +123,23 @@ export const TagCard: React.FC<TagCardProps> = ({
         <span className="text-[10px] font-bold text-secondary tracking-wider font-mono">
           {tag.no}
         </span>
-        <span className={`text-[9px] uppercase tracking-wide font-black px-2 py-0.5 rounded-md relative z-[1] ${rarityBadgeColor}`}>
+        <span
+          className={`text-[9px] uppercase tracking-wide font-black px-2 py-0.5 rounded-md relative z-[1] ${rarityBadgeColor}`}
+        >
           {rarityText}
         </span>
       </div>
 
       {/* 2. Image Area (Mezastar Oval shape wrapper) */}
-      <div className={`relative flex aspect-[7/10] w-full items-center justify-center rounded-xl bg-root/60 p-2 border overflow-hidden mb-3 ${
-        isSuperstar 
-          ? 'border-rose-800/40 shadow-inner shadow-rose-950/20' 
-          : isStarRarity 
-            ? 'border-purple-800/30 shadow-inner shadow-purple-950/20'
-            : 'border-panel'
-      }`}>
+      <div
+        className={`relative flex aspect-[7/10] w-full items-center justify-center rounded-xl bg-root/60 p-2 border overflow-hidden mb-3 ${
+          isSuperstar
+            ? 'border-rose-800/40 shadow-inner shadow-rose-950/20'
+            : isStarRarity
+              ? 'border-purple-800/30 shadow-inner shadow-purple-950/20'
+              : 'border-panel'
+        }`}
+      >
         {/* Glowing aura background for Superstar & Star cards */}
         {isSuperstar && (
           <>
@@ -137,9 +155,13 @@ export const TagCard: React.FC<TagCardProps> = ({
         {renderImage()}
 
         {/* Fallback Beautiful Placeholder card plate */}
-        <div className={`absolute inset-0 flex-col items-center justify-center bg-gradient-to-b from-panel to-root p-4 rounded-xl text-center border border-primary ${tag.imageUrl ? 'hidden' : 'flex'}`}>
+        <div
+          className={`absolute inset-0 flex-col items-center justify-center bg-gradient-to-b from-panel to-root p-4 rounded-xl text-center border border-primary ${
+            tag.imageUrl ? 'hidden' : 'flex'
+          }`}
+        >
           <div className="h-10 w-10 rounded-full bg-elevated/80 flex items-center justify-center mb-2 text-secondary">
-            <Flame className="h-5 w-5" />
+            <Flame className="h-5 w-5" aria-hidden="true" />
           </div>
           <span className="text-xs font-bold text-secondary">No Image</span>
           <span className="text-[10px] text-muted mt-1">Hệ {tag.type}</span>
@@ -163,8 +185,11 @@ export const TagCard: React.FC<TagCardProps> = ({
 
         {/* Notes Indicator overlay */}
         {hasNotes && (
-          <div className="absolute bottom-2 left-2 flex h-6 w-6 items-center justify-center rounded-lg bg-panel text-yellow-400 border border-primary/80 shadow-md" title="Có ghi chú">
-            <MessageSquare className="h-3.5 w-3.5" />
+          <div
+            className="absolute bottom-2 left-2 flex h-6 w-6 items-center justify-center rounded-lg bg-panel text-yellow-400 border border-primary/80 shadow-md"
+            title="Có ghi chú"
+          >
+            <MessageSquare className="h-3.5 w-3.5" aria-hidden="true" />
           </div>
         )}
       </div>
@@ -175,7 +200,9 @@ export const TagCard: React.FC<TagCardProps> = ({
           {tag.name}
         </h3>
         <div className="flex items-center space-x-1.5 mt-1">
-          <span className={`text-[10px] px-2 py-0.5 rounded-md font-bold ${typeBadgeClass}`}>
+          <span
+            className={`text-[10px] px-2 py-0.5 rounded-md font-bold ${typeBadgeClass}`}
+          >
             {tag.type}
           </span>
           {tag.isCustom && (
@@ -187,30 +214,31 @@ export const TagCard: React.FC<TagCardProps> = ({
       </div>
 
       {/* 4. Quantity Adjuster Footer */}
-      <div 
+      <div
         className="flex items-center justify-between gap-1 w-full bg-root/60 p-1 border border-panel rounded-xl"
-        onClick={(e) => e.stopPropagation()} // Stop click propagation to open details modal
+        onClick={(e) => e.stopPropagation()}
       >
         <button
-          onClick={() => onQuantityChange(tag.id, -1)}
+          onClick={() => handleQuantityChange(tag.id, -1)}
           disabled={quantity <= 0}
-          className="flex h-8 w-8 items-center justify-center rounded-lg text-secondary hover:text-primary hover:bg-elevated disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+          aria-label={`Giảm số lượng thẻ ${tag.name}`}
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-secondary hover:text-primary hover:bg-elevated disabled:opacity-30 disabled:hover:bg-transparent transition-colors focus-ring-muted"
         >
-          <Minus className="h-4 w-4" />
+          <Minus className="h-4 w-4" aria-hidden="true" />
         </button>
-        
+
         <span className="text-xs font-black text-primary select-none w-8 text-center">
           {quantity}
         </span>
 
         <button
-          onClick={() => onQuantityChange(tag.id, 1)}
-          className="flex h-8 w-8 items-center justify-center rounded-lg text-secondary hover:text-primary hover:bg-elevated transition-colors"
+          onClick={() => handleQuantityChange(tag.id, 1)}
+          aria-label={`Tăng số lượng thẻ ${tag.name}`}
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-secondary hover:text-primary hover:bg-elevated transition-colors focus-ring-muted"
         >
-          <Plus className="h-4 w-4" />
+          <Plus className="h-4 w-4" aria-hidden="true" />
         </button>
       </div>
-
     </div>
   );
-};
+}, tagCardPropsEqual);

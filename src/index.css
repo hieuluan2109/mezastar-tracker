@@ -1,6 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
+/* color-scheme meta handled via data-theme attribute */
+:root {
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+}
+
 /* --- Tailwind v4 Theme Configuration --- */
 @theme {
   --color-pokemon-superstar: #e11d48;
@@ -183,6 +192,25 @@
   background: var(--glass-hover-bg);
   border-color: var(--glass-hover-border);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* ===== Accessibility: Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== Focus-visible Ring Styles ===== */
+.focus-ring {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/60 transition-shadow duration-150;
+}
+
+.focus-ring-muted {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500/40 transition-shadow duration-150;
 }
 
 /* ===== Animation Effects ===== */

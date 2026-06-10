@@ -73,7 +73,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
       <div className="glass-panel rounded-2xl p-5 flex flex-col justify-between hover:border-rose-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-rose-950/20">
         <div className="flex items-center justify-between">
           <div className="h-9 w-9 rounded-lg bg-rose-500/10 flex items-center justify-center border border-rose-500/20">
-            <Sparkles className="h-5 w-5 text-rose-400" />
+            <Sparkles className="h-5 w-5 text-rose-400" aria-hidden="true" />
           </div>
           <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-400 border border-rose-500/30">
             Superstar ★6
@@ -95,7 +95,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
       <div className="glass-panel rounded-2xl p-5 flex flex-col justify-between hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-purple-950/20">
         <div className="flex items-center justify-between">
           <div className="h-9 w-9 rounded-lg bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
-            <Star className="h-5 w-5 text-purple-400 fill-purple-400/30" />
+            <Star className="h-5 w-5 text-purple-400 fill-purple-400/30" aria-hidden="true" />
           </div>
           <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-400 border border-purple-500/30">
             Star ★5
@@ -117,7 +117,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
       <div className="glass-panel rounded-2xl p-5 flex flex-col justify-between hover:border-slate-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-slate-950/20">
         <div className="flex items-center justify-between">
           <div className="h-9 w-9 rounded-lg bg-slate-500/10 flex items-center justify-center border border-slate-500/20">
-            <Layers className="h-5 w-5 text-secondary" />
+            <Layers className="h-5 w-5 text-secondary" aria-hidden="true" />
           </div>
           <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-slate-500/15 text-slate-400 border border-slate-500/30">
             Normal ★2-4
@@ -139,9 +139,9 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
       {['special', 'promo'].includes(activeSeasonId) || promoEventCustomStats.total > 0 ? (
         <div className="glass-panel rounded-2xl p-5 flex flex-col justify-between hover:border-orange-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-orange-950/20 col-span-1 sm:col-span-2 md:col-span-1">
           <div className="flex items-center justify-between">
-            <div className="h-9 w-9 rounded-lg bg-orange-500/10 flex items-center justify-center border border-orange-500/20">
-              <Flame className="h-5 w-5 text-orange-400" />
-            </div>
+          <div className="h-9 w-9 rounded-lg bg-orange-500/10 flex items-center justify-center border border-orange-500/20">
+            <Flame className="h-5 w-5 text-orange-400" aria-hidden="true" />
+          </div>
             <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-400 border border-orange-500/30">
               Custom / Event
             </span>
