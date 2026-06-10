@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { MezastarTag } from '../types';
-import { X, Save, Trash2, Award, MapPin } from 'lucide-react';
+import { X, Save, Trash2, Award, MapPin, ZoomIn } from 'lucide-react';
 import { useCollection } from '../context/CollectionContext';
 
 interface TagDetailModalProps {
@@ -19,6 +19,7 @@ export const TagDetailModal: React.FC<TagDetailModalProps> = ({
   const { handleSaveNote, handleQuantityChange, handleDeleteTag } =
     useCollection();
   const [localNote, setLocalNote] = useState(noteText);
+  const [isImageZoomOpen, setIsImageZoomOpen] = useState(false);
 
   // Sync state when tag changes
   useEffect(() => {
@@ -28,11 +29,17 @@ export const TagDetailModal: React.FC<TagDetailModalProps> = ({
   // Close on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        if (isImageZoomOpen) {
+          setIsImageZoomOpen(false);
+        } else {
+          onClose();
+        }
+      }
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
+  }, [onClose, isImageZoomOpen]);
 
   const handleSave = () => {
     handleSaveNote(tag.id, localNote);
@@ -97,17 +104,26 @@ export const TagDetailModal: React.FC<TagDetailModalProps> = ({
               }`}
             >
               {tag.imageUrl ? (
-                <img
-                  src={tag.imageUrl}
-                  alt={tag.name}
-                  className="h-full w-full object-contain"
-                  onError={(e) => {
-                    (e.target as HTMLElement).style.display = 'none';
-                    const fallback =
-                      (e.target as HTMLElement).nextElementSibling;
-                    if (fallback) fallback.classList.remove('hidden');
-                  }}
-                />
+                <button
+                  onClick={() => setIsImageZoomOpen(true)}
+                  className="h-full w-full relative group"
+                  aria-label={`Xem phóng to ảnh ${tag.name}`}
+                >
+                  <img
+                    src={tag.imageUrl}
+                    alt={tag.name}
+                    className="h-full w-full object-contain transition-transform duration-200 group-hover:scale-105"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = 'none';
+                      const fallback =
+                        (e.target as HTMLElement).nextElementSibling;
+                      if (fallback) fallback.classList.remove('hidden');
+                    }}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/20 rounded-lg">
+                    <ZoomIn className="h-6 w-6 text-white drop-shadow-lg" aria-hidden="true" />
+                  </div>
+                </button>
               ) : null}
 
               {/* Placeholder */}
@@ -234,6 +250,35 @@ export const TagDetailModal: React.FC<TagDetailModalProps> = ({
           </div>
         </div>
       </div>
+      {/* Image Zoom Overlay */}
+      {isImageZoomOpen && tag.imageUrl && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/85 backdrop-blur-sm p-4"
+          onClick={() => setIsImageZoomOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Ảnh phóng to: ${tag.name}`}
+        >
+          <button
+            onClick={() => setIsImageZoomOpen(false)}
+            aria-label="Đóng ảnh phóng to"
+            className="absolute right-4 top-4 z-10 text-white/70 hover:text-white bg-black/40 p-2 rounded-full transition-colors focus-ring"
+          >
+            <X className="h-6 w-6" aria-hidden="true" />
+          </button>
+
+          <img
+            src={tag.imageUrl}
+            alt={tag.name}
+            className="max-h-[90vh] max-w-[90vw] object-contain rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-xs font-medium bg-black/40 px-3 py-1.5 rounded-full backdrop-blur-sm">
+            {tag.name} — {tag.no}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
