@@ -3,6 +3,7 @@ import './globals.css'
 import { ThemeProvider } from '../context/ThemeContext'
 import { CollectionProvider } from '../context/CollectionContext'
 import { FilterProvider } from '../context/FilterContext'
+import { AuthProvider } from '../context/AuthContext'
 
 export const metadata: Metadata = {
   title: 'MEZASTAR DEX | Pokémon Mezastar Collection Tracker',
@@ -40,13 +41,15 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-root text-primary">
-        <ThemeProvider>
-          <CollectionProvider>
-            <FilterProvider>
-              {children}
-            </FilterProvider>
-          </CollectionProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <CollectionProvider>
+              <FilterProvider>
+                {children}
+              </FilterProvider>
+            </CollectionProvider>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   )

@@ -1,9 +1,22 @@
 'use client'
 
-import React, { useRef } from 'react';
-import { Download, Upload, RefreshCw, Trophy, Sun, Moon } from 'lucide-react';
+'use client'
+
+import React, { useRef, useState } from 'react';
+import {
+  Download,
+  Upload,
+  RefreshCw,
+  Trophy,
+  Sun,
+  Moon,
+  LogIn,
+  LogOut,
+  User,
+} from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useCollection } from '../context/CollectionContext';
+import { useAuth } from '../context/AuthContext';
 
 export const Navbar: React.FC = React.memo(() => {
   const { theme, toggleTheme } = useTheme();
@@ -14,6 +27,8 @@ export const Navbar: React.FC = React.memo(() => {
     handleImport,
     handleResetCollection,
   } = useCollection();
+  const { user, signOut, isLoading } = useAuth();
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -92,6 +107,57 @@ export const Navbar: React.FC = React.memo(() => {
             accept=".json"
             className="hidden"
           />
+
+          {/* User Menu */}
+          {!isLoading && (
+            <div className="relative">
+              {user ? (
+                <>
+                  <button
+                    onClick={() => setShowUserMenu(!showUserMenu)}
+                    aria-label="Menu người dùng"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-400 transition-colors hover:bg-rose-500/20 hover:text-rose-300 focus-ring"
+                  >
+                    <User className="h-4 w-4" aria-hidden="true" />
+                  </button>
+                  {showUserMenu && (
+                    <>
+                      <div
+                        className="fixed inset-0 z-10"
+                        onClick={() => setShowUserMenu(false)}
+                      />
+                      <div className="absolute right-0 top-full mt-2 z-20 w-48 rounded-xl bg-panel border border-primary shadow-xl py-1.5">
+                        <div className="px-3 py-2 border-b border-primary/60">
+                          <p className="text-xs font-semibold text-primary truncate">
+                            {user.email}
+                          </p>
+                          <p className="text-[10px] text-muted">Đã đồng bộ cloud</p>
+                        </div>
+                        <button
+                          onClick={() => {
+                            signOut()
+                            setShowUserMenu(false)
+                          }}
+                          className="flex w-full items-center space-x-2 px-3 py-2 text-xs font-semibold text-secondary hover:text-primary hover:bg-elevated transition-colors"
+                        >
+                          <LogOut className="h-3.5 w-3.5" />
+                          <span>Đăng xuất</span>
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </>
+              ) : (
+                <a
+                  href="/auth/login"
+                  className="inline-flex h-9 items-center space-x-1.5 px-3 rounded-lg border border-primary bg-panel text-secondary transition-colors hover:bg-badge hover:text-primary focus-ring text-xs font-bold"
+                >
+                  <LogIn className="h-3.5 w-3.5" aria-hidden="true" />
+                  <span className="hidden sm:inline">Đăng nhập</span>
+                </a>
+              )}
+            </div>
+          )}
 
           {/* Theme Toggle */}
           <button
