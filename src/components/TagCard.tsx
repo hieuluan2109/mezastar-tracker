@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react';
 import type { MezastarTag } from '../types';
 import { Plus, Minus, MessageSquare, Flame } from 'lucide-react';
@@ -71,7 +73,7 @@ export const TagCard: React.FC<TagCardProps> = React.memo(({
     rarityText = 'Custom';
   }
 
-  // Type-specific CSS class defined in index.css
+  // Type-specific CSS class defined in globals.css
   const typeBadgeClass = `badge-${tag.type.toLowerCase()}`;
 
   // Image loader logic

@@ -1,3 +1,5 @@
+'use client'
+
 import {
   createContext,
   useContext,
@@ -42,13 +44,19 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
   const [seasons, setSeasons] = useState<Season[]>(defaultSeasons);
 
   const [tags, setTags] = useState<MezastarTag[]>(() => {
-    const saved = localStorage.getItem('mezastar_tags');
-    return saved ? JSON.parse(saved) : defaultTags;
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('mezastar_tags');
+      return saved ? JSON.parse(saved) : defaultTags;
+    }
+    return defaultTags;
   });
 
   const [collection, setCollection] = useState<CollectionData>(() => {
-    const saved = localStorage.getItem('mezastar_collection');
-    return saved ? JSON.parse(saved) : {};
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('mezastar_collection');
+      return saved ? JSON.parse(saved) : {};
+    }
+    return {};
   });
 
   // --- LocalStorage Sync ---

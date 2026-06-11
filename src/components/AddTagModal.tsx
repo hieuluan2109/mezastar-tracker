@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect } from 'react';
 import type { MezastarTag } from '../types';
 import { X, Plus, Image, AlertCircle } from 'lucide-react';

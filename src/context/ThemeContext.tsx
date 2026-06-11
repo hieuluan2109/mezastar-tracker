@@ -1,3 +1,5 @@
+'use client'
+
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 
 type Theme = 'dark' | 'light';
@@ -11,8 +13,11 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
-    const saved = localStorage.getItem('mezastar_theme');
-    return saved === 'light' || saved === 'dark' ? saved : 'dark';
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('mezastar_theme');
+      return saved === 'light' || saved === 'dark' ? saved : 'dark';
+    }
+    return 'dark';
   });
 
   const toggleTheme = useCallback(() => {

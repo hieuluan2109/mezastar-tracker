@@ -150,7 +150,8 @@
 @layer base {
   body {
     font-family: var(--font-family-sans);
-    @apply min-h-screen overflow-x-hidden selection:bg-rose-500 selection:text-white;
+    min-height: 100vh;
+    overflow-x: hidden;
     background-color: var(--bg-root);
     color: var(--text-primary);
   }
@@ -206,16 +207,22 @@
 
 /* ===== Focus-visible Ring Styles ===== */
 .focus-ring {
-  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/60 transition-shadow duration-150;
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(225, 29, 72, 0.6);
+  }
 }
 
 .focus-ring-muted {
-  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500/40 transition-shadow duration-150;
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(100, 116, 139, 0.4);
+  }
 }
 
 /* ===== Animation Effects ===== */
 
-/* Shiny sweep for Superstar cards — continuous slow sweep + fast hover burst */
+/* Shiny sweep for Superstar cards */
 .shiny-effect {
   position: relative;
   overflow: hidden;

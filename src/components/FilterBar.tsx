@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react';
 import type { FilterState } from '../types';
 import { Search, Plus, Filter, CircleDot } from 'lucide-react';

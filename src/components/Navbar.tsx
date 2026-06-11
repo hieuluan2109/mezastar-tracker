@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useRef } from 'react';
 import { Download, Upload, RefreshCw, Trophy, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';

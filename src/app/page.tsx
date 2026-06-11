@@ -1,15 +1,21 @@
-import { useState, useMemo, lazy, Suspense } from 'react';
-import { Navbar } from './components/Navbar';
-import { FilterBar } from './components/FilterBar';
-import { StatsDashboard } from './components/StatsDashboard';
-import { TagCard } from './components/TagCard';
-import { useCollection } from './context/CollectionContext';
-import { useFilters } from './context/FilterContext';
-import type { MezastarTag } from './types';
-import { Sparkles, Trophy, RotateCcw } from 'lucide-react';
+'use client'
 
-const TagDetailModal = lazy(() => import('./components/TagDetailModal').then(m => ({ default: m.TagDetailModal })));
-const AddTagModal = lazy(() => import('./components/AddTagModal').then(m => ({ default: m.AddTagModal })));
+import { useState, useMemo, lazy, Suspense } from 'react'
+import { Navbar } from '../components/Navbar'
+import { FilterBar } from '../components/FilterBar'
+import { StatsDashboard } from '../components/StatsDashboard'
+import { TagCard } from '../components/TagCard'
+import { useCollection } from '../context/CollectionContext'
+import { useFilters } from '../context/FilterContext'
+import type { MezastarTag } from '../types'
+import { Sparkles, Trophy, RotateCcw } from 'lucide-react'
+
+const TagDetailModal = lazy(() =>
+  import('../components/TagDetailModal').then((m) => ({ default: m.TagDetailModal }))
+)
+const AddTagModal = lazy(() =>
+  import('../components/AddTagModal').then((m) => ({ default: m.AddTagModal }))
+)
 
 function ModalFallback() {
   return (
@@ -24,23 +30,21 @@ function ModalFallback() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-function App() {
-  const { tags, collection } = useCollection();
-  const { filters, currentSeasonName } = useFilters();
+export default function HomePage() {
+  const { tags, collection } = useCollection()
+  const { filters, currentSeasonName } = useFilters()
 
-  // Modal open states (local — not drilled deeply)
-  const [selectedTag, setSelectedTag] = useState<MezastarTag | null>(null);
-  const [isAddTagOpen, setIsAddTagOpen] = useState(false);
-  // isAddSeasonOpen removed — seasons are added via defaultTags.ts data file
+  const [selectedTag, setSelectedTag] = useState<MezastarTag | null>(null)
+  const [isAddTagOpen, setIsAddTagOpen] = useState(false)
 
   // --- Stats ---
   const totalTagsInSelectedSeason = useMemo(
     () => tags.filter((t) => t.seasonId === filters.seasonId).length,
     [tags, filters.seasonId]
-  );
+  )
 
   const collectedTagsInSelectedSeason = useMemo(
     () =>
@@ -50,45 +54,44 @@ function App() {
           (collection[t.id]?.quantity || 0) > 0
       ).length,
     [tags, collection, filters.seasonId]
-  );
+  )
 
   // --- Filter Logic ---
   const filteredTags = useMemo(
     () =>
       tags.filter((tag) => {
         // 1. Season filter
-        if (tag.seasonId !== filters.seasonId) return false;
+        if (tag.seasonId !== filters.seasonId) return false
 
         // 2. Search filter (by name or card catalog number)
-        const searchQuery = filters.search.trim().toLowerCase();
+        const searchQuery = filters.search.trim().toLowerCase()
         if (searchQuery) {
-          const matchesName = tag.name.toLowerCase().includes(searchQuery);
-          const matchesNo = tag.no.toLowerCase().includes(searchQuery);
-          if (!matchesName && !matchesNo) return false;
+          const matchesName = tag.name.toLowerCase().includes(searchQuery)
+          const matchesNo = tag.no.toLowerCase().includes(searchQuery)
+          if (!matchesName && !matchesNo) return false
         }
 
         // 3. Type filter
-        if (filters.type && tag.type !== filters.type) return false;
+        if (filters.type && tag.type !== filters.type) return false
 
         // 4. Rarity filter
         if (filters.rarity.length > 0 && !filters.rarity.includes(tag.rarity))
-          return false;
+          return false
 
         // 5. Ownership status filter
-        const qty = collection[tag.id]?.quantity || 0;
-        if (filters.ownership === 'owned' && qty === 0) return false;
-        if (filters.ownership === 'missing' && qty > 0) return false;
+        const qty = collection[tag.id]?.quantity || 0
+        if (filters.ownership === 'owned' && qty === 0) return false
+        if (filters.ownership === 'missing' && qty > 0) return false
 
-        return true;
+        return true
       }),
     [tags, collection, filters]
-  );
+  )
 
   return (
     <div className="min-h-screen bg-root text-primary flex flex-col pb-12 theme-transition">
       <Navbar />
 
-      {/* Main Body container */}
       <main className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-8 flex-1">
         {/* Banner Welcome Message */}
         <div className="relative mb-8 rounded-2xl bg-gradient-to-r from-rose-900/40 via-panel/60 to-panel/40 p-6 border border-rose-900/30 overflow-hidden shadow-2xl entrance-fade">
@@ -133,9 +136,7 @@ function App() {
         />
 
         {/* Filters and Search toolbar */}
-        <FilterBar
-          onAddTag={() => setIsAddTagOpen(true)}
-        />
+        <FilterBar onAddTag={() => setIsAddTagOpen(true)} />
 
         {/* Tags Dex Grid with entrance animations */}
         {filteredTags.length > 0 ? (
@@ -203,9 +204,6 @@ function App() {
           />
         </Suspense>
       )}
-
     </div>
-  );
+  )
 }
-
-export default App;

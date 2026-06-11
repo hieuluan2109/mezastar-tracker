@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect } from 'react';
 import type { MezastarTag } from '../types';
 import { X, Save, Trash2, Award, MapPin, ZoomIn } from 'lucide-react';

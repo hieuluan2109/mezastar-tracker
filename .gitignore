@@ -7,10 +7,21 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
-dist
-dist-ssr
-*.local
+
+# Next.js build output
+.next
+
+# Env files (will contain secrets when adding auth)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# TypeScript next-env is auto-generated
+next-env.d.ts
 
 # Editor directories and files
 .vscode/*

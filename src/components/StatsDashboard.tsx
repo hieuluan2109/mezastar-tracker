@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react';
 import type { MezastarTag, CollectionData } from '../types';
 import { Sparkles, Star, Layers, Flame } from 'lucide-react';
