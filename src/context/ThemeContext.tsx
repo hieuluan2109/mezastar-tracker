@@ -12,18 +12,22 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('mezastar_theme');
-      return saved === 'light' || saved === 'dark' ? saved : 'dark';
+  // Server and client both start with 'dark' to match SSR HTML
+  const [theme, setTheme] = useState<Theme>('dark');
+
+  // After mount, sync React state with the data-theme set by the inline script
+  useEffect(() => {
+    const attr = document.documentElement.getAttribute('data-theme');
+    if (attr === 'light' || attr === 'dark') {
+      setTheme(attr);
     }
-    return 'dark';
-  });
+  }, []);
 
   const toggleTheme = useCallback(() => {
     setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
   }, []);
 
+  // Sync data-theme attribute and localStorage whenever theme changes
   useEffect(() => {
     localStorage.setItem('mezastar_theme', theme);
     document.documentElement.setAttribute('data-theme', theme);

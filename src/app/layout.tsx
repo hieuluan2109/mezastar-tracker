@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import './globals.css'
 import { ThemeProvider } from '../context/ThemeContext'
 import { CollectionProvider } from '../context/CollectionContext'
@@ -25,7 +26,9 @@ export default function RootLayout({
           href="https://world.pokemonmezastar.com/share/img/favicon.ico"
         />
         {/* Prevent theme flash: set data-theme before React hydrates */}
-        <script
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
@@ -41,6 +44,22 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-root text-primary">
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('mezastar_theme');
+                  if (theme === 'light' || theme === 'dark') {
+                    document.documentElement.setAttribute('data-theme', theme);
+                  }
+                } catch(e) {}
+              })();
+            `,
+          }}
+        />
         <AuthProvider>
           <ThemeProvider>
             <CollectionProvider>
