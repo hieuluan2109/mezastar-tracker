@@ -23,7 +23,7 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
 
   const collectedTags = seasonTags.filter(t => (collection[t.id]?.quantity || 0) > 0);
   const collectedCount = collectedTags.length;
-  
+
   const percentage = totalTagsCount > 0 ? Math.round((collectedCount / totalTagsCount) * 100) : 0;
 
   // Breakdown by rarity
@@ -51,14 +51,14 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
         <div className="relative z-10 space-y-2 w-full">
           <span className="text-xs font-black text-rose-400 tracking-wider uppercase">{seasonName}</span>
           <h2 className="text-2xl font-extrabold text-primary">Độ Phủ Bộ Sưu Tập</h2>
-          
+
           <div className="space-y-1">
             <div className="flex justify-between text-xs text-secondary font-medium">
               <span>Đã hoàn thành</span>
               <span className="font-bold text-primary">{collectedCount} / {totalTagsCount} thẻ</span>
             </div>
             <div className="w-full bg-progress-track rounded-full h-3.5 overflow-hidden p-0.5 border border-secondary/40 progress-shimmer">
-              <div 
+              <div
                 className="bg-gradient-to-r from-rose-500 via-amber-500 to-emerald-500 h-2 rounded-full transition-all duration-1000 ease-out"
                 style={{ width: `${percentage}%` }}
               ></div>
@@ -138,12 +138,12 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({
       </div>
 
       {/* Custom/Promo Stats Card (Only shown if current season is Special or if there are promo tags) */}
-      {['special', 'promo'].includes(activeSeasonId) || promoEventCustomStats.total > 0 ? (
+      {['event', 'promo'].includes(activeSeasonId) || promoEventCustomStats.total > 0 ? (
         <div className="glass-panel rounded-2xl p-5 flex flex-col justify-between hover:border-orange-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-orange-950/20 col-span-1 sm:col-span-2 md:col-span-1">
           <div className="flex items-center justify-between">
-          <div className="h-9 w-9 rounded-lg bg-orange-500/10 flex items-center justify-center border border-orange-500/20">
-            <Flame className="h-5 w-5 text-orange-400" aria-hidden="true" />
-          </div>
+            <div className="h-9 w-9 rounded-lg bg-orange-500/10 flex items-center justify-center border border-orange-500/20">
+              <Flame className="h-5 w-5 text-orange-400" aria-hidden="true" />
+            </div>
             <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-400 border border-orange-500/30">
               Custom / Event
             </span>

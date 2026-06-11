@@ -82,7 +82,13 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
   const [tags, setTags] = useState<MezastarTag[]>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('mezastar_tags');
-      return saved ? JSON.parse(saved) : defaultTags;
+      if (saved) {
+        const savedTags: MezastarTag[] = JSON.parse(saved);
+        // Only keep custom tags from localStorage (isCustom is set by handleAddTag)
+        const customTags = savedTags.filter((t) => t.isCustom);
+        return [...defaultTags, ...customTags];
+      }
+      return defaultTags;
     }
     return defaultTags;
   });

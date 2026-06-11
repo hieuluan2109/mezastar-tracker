@@ -102,51 +102,9 @@ const season2Normal: MezastarTag[] = [
   s2(69, 'Nidorino', 'Poison', 'normal'),
   s2(70, 'Nidoking', 'Poison', 'normal'),
 ];
-
-// ===== Regular Tags (promo cards, added to Special season) =====
-const season2RegularTags: MezastarTag[] = [
-  {
-    id: 'season-2-r-2-1',
-    no: 'R-2-1',
-    name: 'Pikachu (Regular Tag)',
-    rarity: 'promo',
-    type: 'Electric',
-    imageUrl: 'https://webassets-pokemonmezastar.marv.jp/assets/img/ver1/pm_en_1-1-019_f.png',
-    seasonId: 'special',
-    notes: 'Tag bản thường đặc biệt từ bộ Regular Tag của Season 2!',
-  },
-  {
-    id: 'season-2-r-2-2',
-    no: 'R-2-2',
-    name: 'Charizard (Regular Tag)',
-    rarity: 'promo',
-    type: 'Fire',
-    imageUrl: 'https://webassets-pokemonmezastar.marv.jp/assets/img/ver1/pm_en_1-1-009_f.png',
-    seasonId: 'special',
-    notes: 'Tag bản thường đặc biệt từ bộ Regular Tag của Season 2!',
-  },
-  {
-    id: 'season-2-r-2-3',
-    no: 'R-2-3',
-    name: 'Gengar (Regular Tag)',
-    rarity: 'promo',
-    type: 'Ghost',
-    imageUrl: 'https://webassets-pokemonmezastar.marv.jp/assets/img/ver1/pm_en_1-1-016_f.png',
-    seasonId: 'special',
-    notes: 'Tag bản thường đặc biệt từ bộ Regular Tag của Season 2!',
-  },
-];
-
 /**
  * Get all Season 2 main tags (superstar + star + normal).
  */
 export function createSeason2Tags(): MezastarTag[] {
   return [...season2Superstar, ...season2Star, ...season2Normal];
-}
-
-/**
- * Get Season 2 Regular Tag promo cards.
- */
-export function createSeason2RegularTags(): MezastarTag[] {
-  return [...season2RegularTags];
 }

@@ -12,7 +12,7 @@
 import type { MezastarTag } from '../types';
 import { defaultSeasons } from './seasons';
 import { createSeason1Tags } from './season1';
-import { createSeason2Tags, createSeason2RegularTags } from './season2';
+import { createSeason2Tags } from './season2';
 import { createSpecialCards } from './specialCards';
 export { POKEMON_TYPES } from './constants';
 export { defaultSeasons } from './seasons';
@@ -21,6 +21,5 @@ export { defaultSeasons } from './seasons';
 export const defaultTags: MezastarTag[] = [
   ...createSeason1Tags(),
   ...createSeason2Tags(),
-  ...createSeason2RegularTags(),
   ...createSpecialCards(),
 ];
